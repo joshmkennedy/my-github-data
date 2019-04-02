@@ -10,7 +10,10 @@ app.get('/', (req, res, next)=>{
     res.send('hello go to <a href="http://localhost:2900/scrape">scrape</a>')
 
 })
+app.post('/', (req, res, next)=>{
+    res.send('hello go to <a href="http://localhost:2900/scrape">scrape</a>')
 
+})
 app.get('/slack-get-date',(req, res, next)=>{
     res.send('your at /slack-get-data')
 })
