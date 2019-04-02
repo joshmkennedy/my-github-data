@@ -2,6 +2,7 @@ import express from 'express'
 import { getCount } from './scraper'
 import db from './db'
 import cors from 'cors'
+import {format} from 'date-fns'
 
 const app = express()
 app.use(cors())
@@ -13,7 +14,7 @@ app.get('/', (req, res, next)=>{
 app.post('/slack-get-date', (req, res, next)=>{
     res.status(200).type('json')
     res.json({
-        text: Date.now()
+        text: format(Date.now())
     })
 
 
