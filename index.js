@@ -20,7 +20,7 @@ app.post('/slack-get-date', (req, res, next)=>{
 
 })
 
-app.post('/get-a-fact', (req, res, next)=>{
+app.post('/get-a-fact', async (req, res, next)=>{
     res.status(200).type('json')
     const fact = await getFacts()
     await res.json({
