@@ -24,6 +24,4 @@ app.get('/scrape', async (req, res, next)=>{
 
 
 
-app.listen(2900, ()=>{
-    console.log('app running on http://localhost:2900')
-})
+app.listen(process.env.PORT || 5000)
