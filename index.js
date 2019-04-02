@@ -10,8 +10,12 @@ app.get('/', (req, res, next)=>{
     res.send('hello go to <a href="http://localhost:2900/scrape">scrape</a>')
 
 })
-app.post('/', (req, res, next)=>{
-    res.send('hello go to <a href="http://localhost:2900/scrape">scrape</a>')
+app.post('/slack-get-date', (req, res, next)=>{
+    res.status(200).type('json')
+    res.json({
+        text: "hello"
+    })
+
 
 })
 app.get('/slack-get-date',(req, res, next)=>{
