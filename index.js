@@ -13,6 +13,9 @@ app.get('/', (req, res, next)=>{
 app.post('/slack-get-date',(req, res, next)=>{
     res.send(Date.now())
 })
+app.get('/slack-get-date',(req, res, next)=>{
+    res.send(Date.now())
+})
 app.get('/scrape', async (req, res, next)=>{
     const theCount = await getCount()
     //console.log(theCount)
