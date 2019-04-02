@@ -14,7 +14,7 @@ app.get('/', (req, res, next)=>{
 app.post('/slack-get-date', (req, res, next)=>{
     res.status(200).type('json')
     res.json({
-        text: format(Date.now())
+        text: format(Date.now(), 'MM/DD/YYYY')
     })
 
 
