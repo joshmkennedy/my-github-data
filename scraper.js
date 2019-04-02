@@ -1,8 +1,9 @@
 import axios from 'axios'
 import cheerio from 'cheerio'
 
+
 async function getHTML(url) {
-    const {data: html} = await axios.get(url, {responseType: 'document'})
+    const {data: html} = await axios.get(url)
     return html
 
 }
@@ -18,5 +19,11 @@ async function getCount(){
     const insta = await getInstagram(html)
     return insta;
 }
+async function getFacts(){
+    const res = await getHTML('http://mentalfloss.com/api/facts?limit=1')
+    const data = await res.json()
+    const fact = await data[0].fact
+    return fact
 
-export { getCount } 
+}
+export { getCount, getFacts } 
