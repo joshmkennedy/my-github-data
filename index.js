@@ -13,7 +13,7 @@ app.get('/', (req, res, next)=>{
 app.post('/slack-get-date', (req, res, next)=>{
     res.status(200).type('json')
     res.json({
-        text: "hello"
+        text: Date.now()
     })
 
 
