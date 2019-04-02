@@ -22,9 +22,17 @@ app.post('/slack-get-date', (req, res, next)=>{
 
 app.post('/get-a-fact', (req, res, next)=>{
     res.status(200).type('json')
-    res.json({
-        text: getFacts()
+    const fact = await getFacts()
+    await res.json({
+        text:`${fact}`
     })
+
+
+})
+app.get('/get-a-fact', async (req, res, next)=>{
+    res.status(200).type('json')
+    const fact = await getFacts()
+    await res.send(`${fact}`)
 
 
 })
@@ -37,4 +45,4 @@ app.get('/scrape', async (req, res, next)=>{
 
 
 
-app.listen(process.env.PORT || 5000)
+app.listen(/* process.env.PORT ||  */5000)

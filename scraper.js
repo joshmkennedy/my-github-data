@@ -21,8 +21,9 @@ async function getCount(){
 }
 async function getFacts(){
     const res = await getHTML('http://mentalfloss.com/api/facts?limit=1')
-    const data = await res.json()
-    const fact = await data[0].fact
+   //const data = await res.json()
+    const fact = await res[0].fact
+    console.log(fact)
     return fact
 
 }
