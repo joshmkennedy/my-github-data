@@ -51,12 +51,12 @@ app.post('/poll', urlencodedParser,(req, res, next)=>{
     res.status(200).type('json')
 
     //const {text}= JSON.parse(req.body.payload)
-    console.log(req.body.text)
+    
     const message ={
         "text": "This is your first interactive message",
         "attachments": [
             {
-                "text": 'text',
+                "text": req.body.text,
                 "fallback": "Shame... buttons aren't supported in this land",
                 "callback_id": "button_tutorial",
                 "color": "#3AA3E3",
