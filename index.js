@@ -51,6 +51,7 @@ app.post('/poll', urlencodedParser,(req, res, next)=>{
     res.status(200).type('json')
 
     const {text}= JSON.parse(req.body.payload)
+    console.log(req.body.payload)
     const message ={
         "text": "This is your first interactive message",
         "attachments": [
