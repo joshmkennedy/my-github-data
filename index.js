@@ -46,13 +46,16 @@ app.get('/slack-get-date',(req, res, next)=>{
 app.get('/scrape', async (req, res, next)=>{
     res.send('your at /scrape')
 })
-app.post('/poll', urlencodedParser,(reg, res, next)=>{
+app.post('/poll', urlencodedParser,(req, res, next)=>{
+    
     res.status(200).type('json')
+
+    const {text}= JSON.parse(req.body.payload)
     const message ={
         "text": "This is your first interactive message",
         "attachments": [
             {
-                "text": "Building buttons is easy right?",
+                "text": text,
                 "fallback": "Shame... buttons aren't supported in this land",
                 "callback_id": "button_tutorial",
                 "color": "#3AA3E3",
