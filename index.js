@@ -56,7 +56,7 @@ app.post('/poll', urlencodedParser,(req, res, next)=>{
         "text": "This is your first interactive message",
         "attachments": [
             {
-                "text": text,
+                "text": 'text',
                 "fallback": "Shame... buttons aren't supported in this land",
                 "callback_id": "button_tutorial",
                 "color": "#3AA3E3",
