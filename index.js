@@ -4,6 +4,7 @@ import db from './db'
 import cors from 'cors'
 import {format} from 'date-fns'
 import bodyParser from 'body-parser'
+import axios from 'axios';
 
 const app = express()
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -91,12 +92,12 @@ app.post('/poll', urlencodedParser,(req, res, next)=>{
 app.post('/poll-action',urlencodedParser, async(req, res, next)=>{
     res.status(200).type('json')
     console.log(req.body.payload)
-    const url = JSON.parse(req.body.payload.response_url)
-    const message = {text:'got it'}
-    const send = await axios.post(url, {
-        body:message
+    const {user, actions, response_url} = JSON.parse(req.body.payload)
+    await axios.post(response_url, {
+        text:`@${user.name} said ${actions[0].name}`,
+        "replace_original": false
     })
-    return send
+    
 })
 
 
