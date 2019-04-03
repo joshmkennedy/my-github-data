@@ -90,8 +90,9 @@ app.post('/poll', urlencodedParser,(req, res, next)=>{
 })
 app.post('/poll-action',urlencodedParser, async(req, res, next)=>{
     res.status(200).type('json')
+    console.log(req.body.payload)
     const url = JSON.parse(req.body.payload.response_url)
-    const message = {}
+    const message = {text:'got it'}
     const send = await axios.post(url, {
         body:message
     })
