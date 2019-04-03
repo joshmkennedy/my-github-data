@@ -53,7 +53,7 @@ app.post('/poll', urlencodedParser,(req, res, next)=>{
     //const {text}= JSON.parse(req.body.payload)
     
     const message ={
-        "text": "This is your first interactive message",
+        "text": "Just a quick question",
         "attachments": [
             {
                 "text": req.body.text,
@@ -87,6 +87,15 @@ app.post('/poll', urlencodedParser,(req, res, next)=>{
     }
     res.json(message)
     
+})
+app.post('/poll-action',urlencodedParser, async(req, res, next)=>{
+    res.status(200).type('json')
+    const url = JSON.parse(req.body.payload.response_url)
+    const message = {}
+    const send = await axios.post(url, {
+        body:message
+    })
+    return send
 })
 
 
