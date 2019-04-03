@@ -54,6 +54,7 @@ app.post('/poll', urlencodedParser,(req, res, next)=>{
     //const {text}= JSON.parse(req.body.payload)
     
     const message ={
+        response_type:"in_channel",
         "text": "Just a quick question",
         "attachments": [
             {
