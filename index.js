@@ -59,9 +59,6 @@ app.post('/poll', urlencodedParser, async (req, res, next)=>{
     res.status(200).type('json').send('')
     const attachments = [
         {
-            "text": "yes:0, no:0, maybe:0" 
-        },
-        {
             "text": req.body.text,
             "fallback": "Shame... buttons aren't supported in this land",
             "callback_id": "the_poll",
@@ -88,6 +85,9 @@ app.post('/poll', urlencodedParser, async (req, res, next)=>{
                     "style": "danger"
                 }
             ]
+        },
+        {
+            "text": "yes:0\n no:0\n maybe:0" 
         }
 
     ]
@@ -101,8 +101,8 @@ app.post('/poll', urlencodedParser, async (req, res, next)=>{
         yesCount:0,
         noCount:0,
         maybeCount:0,
-    })
-    console.log(db)
+    }).write()
+    console.log(db.get('polls').value())
     console.log('Message sent', send.ts)
 
 })
@@ -127,7 +127,7 @@ app.post('/poll-action', urlencodedParser, async(req, res, next)=>{
     const yesCount = db.get('polls').find({id:message_ts}).value('yesCount')
     const noCount = db.get('polls').find({id:message_ts}).value('noCount')
     const maybeCount = db.get('polls').find({id:message_ts}).value('maybeCount')
-    attachments[0].text = `yes:${yesCount.yesCount}, no:${noCount.noCount}, maybe:${maybeCount.maybeCount}`
+    attachments[1].text = `yes:${yesCount.yesCount}\nno:${noCount.noCount}\nmaybe:${maybeCount.maybeCount}`
 
     const updatedAttachments = [...attachments, {text:`${user.name} said ${actions[0].name}`}]
     
