@@ -112,7 +112,7 @@ app.post('/poll-action', urlencodedParser, async(req, res, next)=>{
     console.log( JSON.parse(req.body.payload) )  
 
     const attachments = original_message.attachments
-    const {name} = action[0]
+    const {name} = actions[0]
     if(name == 'yes'){
         const updateYes = db.get('polls').find({ id: message_ts }).update('yesCount', (count)=>count+1).write()
     }else if(name == 'no'){
