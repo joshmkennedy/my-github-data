@@ -6,8 +6,7 @@ import FileSync from 'lowdb/adapters/FileSync'
 const adapter = new FileSync('./db.json')
 const db = low(adapter)
 db.defaults({
-    posts:{},
-    count:0,
+    polls:[]
 }).write()
 
 export default db
