@@ -102,6 +102,7 @@ app.post('/poll', urlencodedParser, async (req, res, next)=>{
         noCount:0,
         maybeCount:0,
     })
+    console.log(db)
     console.log('Message sent', send.ts)
 
 })
@@ -126,7 +127,7 @@ app.post('/poll-action', urlencodedParser, async(req, res, next)=>{
     const yesCount = db.get('polls').find({id:message_ts}).value('yesCount')
     const noCount = db.get('polls').find({id:message_ts}).value('noCount')
     const maybeCount = db.get('polls').find({id:message_ts}).value('maybeCount')
-    attachments[0].text = `yes:${yesCount}, no:${noCount}, maybe:${maybeCount}`
+    attachments[0].text = `yes:${yesCount.yesCount}, no:${noCount.noCount}, maybe:${maybeCount.maybeCount}`
 
     const updatedAttachments = [...attachments, {text:`${user.name} said ${actions[0].name}`}]
     
