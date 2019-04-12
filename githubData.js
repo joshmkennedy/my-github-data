@@ -45,7 +45,7 @@ async function getCommitsByWeek(full_name, err) {
         const notInitial =  await formated.filter((repo, i)=>i!==0)
         return notInitial
     } catch(error){
-        return {w:0 ,additions:0, deletions:0, sum:0}
+        return [{w:0 ,additions:0, deletions:0, sum:0}]
     }
 }
 
