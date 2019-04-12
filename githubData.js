@@ -45,6 +45,7 @@ async function getCommitsByWeek(full_name, err) {
         const notInitial =  await formated.filter((repo, i)=>i!==0)
         return notInitial
     } catch(error){
+        const url = await `https://api.github.com/repos/${full_name}/stats/contributors`
         const {data} = await axios.get(url , AUTH)
         const { weeks } =await data[0]
         const formated = await weeks.map(week=>{
