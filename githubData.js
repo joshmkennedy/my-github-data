@@ -29,10 +29,10 @@ async  function getRepos(user){
     return repos
 }
 
-async function getCommitsByWeek(full_name) {
+async function getCommitsByWeek(full_name, err) {
     const url = await `https://api.github.com/repos/${full_name}/stats/contributors`
     const {data} = await axios.get(url , AUTH)
-    if(data == null && data== undefined)return {w:0, additions:0, deletions:0, sum:0}
+    if(err)return {w:0, additions:0, deletions:0, sum:0}
     const { weeks } =await data[0]
     const formated = await weeks.map(week=>{
         const d = new Date(week.w*1000)
