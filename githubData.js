@@ -32,6 +32,7 @@ async  function getRepos(user){
 async function getCommitsByWeek(full_name) {
     const url = await `https://api.github.com/repos/${full_name}/stats/contributors`
     const {data} = await axios.get(url , AUTH)
+    if(data == [])return null
     const { weeks } =await data[0]
     const formated = await weeks.map(week=>{
         const d = new Date(week.w*1000)
