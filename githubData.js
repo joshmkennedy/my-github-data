@@ -30,9 +30,9 @@ async  function getRepos(user){
 }
 
 async function getCommitsByWeek(full_name, err) {
+    try{
         const url = await `https://api.github.com/repos/${full_name}/stats/contributors`
-        let {data} = await axios.get(url , AUTH)
-        if(data=={}) data = await axios.get(url, AUTH)
+        const {data} = await axios.get(url , AUTH)
         const { weeks } =await data[0]
         const formated = await weeks.map(week=>{
             const d = new Date(week.w*1000)
@@ -44,6 +44,20 @@ async function getCommitsByWeek(full_name, err) {
         })
         const notInitial =  await formated.filter((repo, i)=>i!==0)
         return notInitial
+    } catch(error){
+        const {data} = await axios.get(url , AUTH)
+        const { weeks } =await data[0]
+        const formated = await weeks.map(week=>{
+            const d = new Date(week.w*1000)
+            const w = format(d, 'MM/DD/YYYY')
+            const additions = week.a 
+            const deletions = week.d
+            const sum = additions - deletions 
+            return {w ,additions, deletions, sum}
+        })
+        const notInitial =  await formated.filter((repo, i)=>i!==0)
+        return notInitial
+    }
 }
 
 
