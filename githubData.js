@@ -36,7 +36,7 @@ async function getCommitsByWeek(full_name, err) {
         const { weeks } =await data[0]
         const formated = await weeks.map(week=>{
             const d = new Date(week.w*1000)
-            const w = format(d, 'MM/DD/YYYY')
+            const w = week.w
             const additions = week.a 
             const deletions = week.d
             const sum = additions - deletions 
@@ -50,7 +50,7 @@ async function getCommitsByWeek(full_name, err) {
         const { weeks } =await data[0]
         const formated = await weeks.map(week=>{
             const d = new Date(week.w*1000)
-            const w = format(d, 'MM/DD/YYYY')
+            const w = week.w
             const additions = week.a 
             const deletions = week.d
             const sum = additions - deletions 
