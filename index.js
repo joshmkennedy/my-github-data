@@ -15,7 +15,7 @@ import groupAndTotal from './groupAndTotal'
 
 console.log(groupAndTotal(fakedata,'w','additions'))
 
-/* const app = express() 
+ const app = express() 
 app.use(cors())
 
 app.get('/', (req, res, next)=>{
@@ -30,25 +30,14 @@ async function test(){
         return commits
     })
     const results = await Promise.all(commitData)
-    const totalAdditions =await results.reduce((total, res)=>{
-        const eachRepo = res.reduce((total, repo)=>total+repo.additions,0)
-        return total+eachRepo
-    },0)
-    let all = []
+    let all = []//this needs refactorying uhh uhgly
     results.map((repo)=>{
         repo.map(r=>all.push(r))
     })
-    const groupByWeek = all.sort((a,b)=>a.w-b.w)
-    const byWeek = all.reduce((tArr, subArr)=>{
-        const inArr= tArr.filter(arr=>arr.w===subArr.w)
-        if(inArr.length<1){
-            tArr = [...tArr, {w:subArr.w, a:subArr.additions}]
-            return  tArr 
-        }
-        inArr[0].a+subArr.additions
-    },[])
+    const weeksTotaledData = groupAndTotal(all,'w','additions')
+
 console.log(groupByWeek)
-} */
+} 
 
 
 
