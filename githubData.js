@@ -32,7 +32,8 @@ async  function getRepos(user){
 async function getCommitsByWeek(full_name, err) {
     try{
         const test = await `https://api.github.com/repos/${full_name}/stats/contributors`
-        const url = await `https://api.github.com/repos/${full_name}/stats/contributors`
+        setTimeout(()=>{
+            const url = await `https://api.github.com/repos/${full_name}/stats/contributors`
         const {data} = await axios.get(url , AUTH)
         const { weeks } =await data[0]
         const formated = await weeks.map(week=>{
@@ -40,6 +41,7 @@ async function getCommitsByWeek(full_name, err) {
              return {w,c}
         })
         return formated
+        },200)
     }catch(e){
         console.log(e)
         const url = await `https://api.github.com/repos/${full_name}/stats/contributors`
