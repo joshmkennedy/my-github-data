@@ -34,7 +34,7 @@ async function getCommitsByWeek(full_name, err) {
         const test = await `https://api.github.com/repos/${full_name}/stats/contributors`
         const waiting = await setTimeout(() => {
             console.log('waiting')
-        }, 200);
+        }, 500);
         const url = await `https://api.github.com/repos/${full_name}/stats/contributors`
         const {data} = await axios.get(url , AUTH)
         const { weeks } =await data[0]
