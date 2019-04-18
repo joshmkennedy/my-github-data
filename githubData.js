@@ -50,7 +50,7 @@ async function getCommitsByWeek(full_name, err) {
         return formated
     }catch(e){
         console.log(e)
-        retry()
+        await retry()
     }  
 }
 
