@@ -28,16 +28,7 @@ async  function getRepos(user){
     })
     return repos
 }
-async function retry(){
-    const url = await `https://api.github.com/repos/${full_name}/stats/contributors`
-        const {data} = await axios.get(url , AUTH)
-        const { weeks } =await data[0]
-        const formated = await weeks.map(week=>{
-             const{ w, c } = week
-             return {w,c}
-        })
-        return formated
-}
+
 async function getCommitsByWeek(full_name, err) {
     try{
         const url = await `https://api.github.com/repos/${full_name}/stats/contributors`
@@ -50,7 +41,14 @@ async function getCommitsByWeek(full_name, err) {
         return formated
     }catch(e){
         console.log(e)
-        await retry()
+        const url = await `https://api.github.com/repos/${full_name}/stats/contributors`
+        const {data} = await axios.get(url , AUTH)
+        const { weeks } =await data[0]
+        const formated = await weeks.map(week=>{
+             const{ w, c } = week
+             return {w,c}
+        })
+        return formated
     }  
 }
 
