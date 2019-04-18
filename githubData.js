@@ -32,7 +32,7 @@ async  function getRepos(user){
 async function getCommitsByWeek(full_name, err) {
     try{
         const test = await `https://api.github.com/repos/${full_name}/stats/contributors`
-        setTimeout(() => {
+        await setTimeout(() => {
             console.log('waiting')
         }, 500);
         const url = await `https://api.github.com/repos/${full_name}/stats/contributors`
