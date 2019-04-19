@@ -15,11 +15,17 @@ import groupAndTotal from './groupAndTotal'
  const app = express() 
 app.use(cors())
 
-app.get('/', (req, res, next)=>{
-    test();
+app.get('/', async(req, res, next)=>{
+    const data = await sendData()
+    /*  */
+    const go = await res.send(
+      data
+   )
+   return go
+
 })
 
-async function test(){
+async function sendData(){
     
     const myRepos =  await getRepos('joshatoutthink')
     const commitData = await  myRepos.map(async (repo)=>{
@@ -35,9 +41,9 @@ async function test(){
         repo.map(r=>all.push(r))
     })
     const weeksTotaledData = await groupAndTotal(all,'w','c') 
-    console.log(weeksTotaledData)
+    return weeksTotaledData
 
 } 
-test()
+app.listen(3000, console.log('http://localhost:3000'))
 
 
