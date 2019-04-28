@@ -32,26 +32,49 @@ async function getRepos(user) {
 }
 
 async function getCommitsByWeek(user) {
-  const allRepoNames = await getRepos(user);
-  const repoURLs = await allRepoNames.map(({ full_name, name }) => {
-    return {
-      name,
-      url: `https://api.github.com/repos/${full_name}/stats/contributors`,
-    };
-  });
+  try {
+    const allRepoNames = await getRepos(user);
+    const repoURLs = await allRepoNames.map(({ full_name, name }) => {
+      return {
+        name,
+        url: `https://api.github.com/repos/${full_name}/stats/contributors`,
+      };
+    });
 
-  const theStuff = await Promise.all(
-    repoURLs.map(({ url, name }) =>
-      axios.get(url, AUTH).then(({ data }) => {
-        const info = data[0].weeks.map(week => {
-          return { w: week.w, c: week.c, a: week.a };
-        });
-        //console.log(name, info);
-        return { name, info };
-      })
-    )
-  );
-  return theStuff;
+    const theStuff = await Promise.all(
+      repoURLs.map(({ url, name }) =>
+        axios.get(url, AUTH).then(({ data }) => {
+          const repoData = data[0].weeks.map(week => {
+            return { w: week.w, c: week.c, a: week.a };
+          });
+          //console.log(name, info);
+          return { name, repoData };
+        })
+      )
+    );
+    return theStuff;
+  } catch (e) {
+    const allRepoNames = await getRepos(user);
+    const repoURLs = await allRepoNames.map(({ full_name, name }) => {
+      return {
+        name,
+        url: `https://api.github.com/repos/${full_name}/stats/contributors`,
+      };
+    });
+
+    const theStuff = await Promise.all(
+      repoURLs.map(({ url, name }) =>
+        axios.get(url, AUTH).then(({ data }) => {
+          const info = data[0].weeks.map(week => {
+            return { w: week.w, c: week.c, a: week.a };
+          });
+          //console.log(name, info);
+          return { name, info };
+        })
+      )
+    );
+    return theStuff;
+  }
 }
 
 /*  catch (e) {

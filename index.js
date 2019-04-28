@@ -14,21 +14,21 @@ app.use(cors());
 
 app.get("/", async (req, res, next) => {
   const USER = db.get("user").value();
-
+  const data = await getCommitsByWeek(USER);
   const go = res.send({
-    allRepoCommits: await getAllRepoCommits(USER),
-    eachBiggestCommitWeek: await getEachBiggestCommitWeek(),
-    EachTotalCommits: await EachTotalCommits(),
+    allRepoCommits: await getAllRepoCommits(data),
+    eachBiggestCommitWeek: await getEachBiggestCommitWeek(data),
+    EachTotalCommits: await EachTotalCommits(data),
     EachAverageGap: "",
-    EachAverageCommitCount: await EachAverageCommitCount(),
+    EachAverageCommitCount: await EachAverageCommitCount(data),
     user: USER,
   });
   return go;
 });
 
-async function getAllRepoCommits(user) {
+async function getAllRepoCommits(data) {
   //const data = await getCommitsByWeek(user);
-  const data = fakedata;
+  //const data = fakedata;
 
   let all = []; //this needs refactorying uhh uhgly
   await data.map(({ repoData }) => {
@@ -38,8 +38,8 @@ async function getAllRepoCommits(user) {
 
   return weeksTotaledData;
 }
-async function getEachBiggestCommitWeek() {
-  const data = fakedata; //eventually will be getCommitsByWeek
+async function getEachBiggestCommitWeek(data) {
+  //const data = fakedata; //eventually will be getCommitsByWeek
 
   const eachRepo = await data.map(repo => {
     const groupedByWeek = groupAndTotal(repo.repoData, "w", "c");
@@ -52,8 +52,8 @@ async function getEachBiggestCommitWeek() {
   return eachRepo;
 }
 
-async function EachTotalCommits() {
-  const data = fakedata; //eventually will be getCommitsByWeek
+async function EachTotalCommits(data) {
+  //const data = fakedata; //eventually will be getCommitsByWeek
   const eachRepo = await data.map(repo => {
     const totalCommits = repo.repoData.reduce(
       (total, data) => total + data.c,
@@ -63,8 +63,8 @@ async function EachTotalCommits() {
   });
   return eachRepo;
 }
-async function EachAverageCommitCount() {
-  const data = fakedata; //eventually will be getCommitsByWeek
+async function EachAverageCommitCount(data) {
+  //const data = fakedata; //eventually will be getCommitsByWeek
   const eachRepo = await data.map(repo => {
     const totalCommits = repo.repoData.reduce(
       (total, data) => total + data.c,
