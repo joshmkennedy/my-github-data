@@ -31,17 +31,30 @@ async function getRepos(user) {
   return repos;
 }
 
-async function getCommitsByWeek(full_name, err) {
-  try {
-    const url = await `https://api.github.com/repos/${full_name}/stats/contributors`;
-    const { data } = await axios.get(url, AUTH);
-    const { weeks } = await data[0];
-    const formated = await weeks.map(week => {
-      const { w, c } = week;
-      return { w, c };
-    });
-    return formated;
-  } catch (e) {
+async function getCommitsByWeek(user) {
+  const allRepoNames = await getRepos(user);
+  const repoURLs = await allRepoNames.map(({ full_name, name }) => {
+    return {
+      name,
+      url: `https://api.github.com/repos/${full_name}/stats/contributors`,
+    };
+  });
+
+  const theStuff = await Promise.all(
+    repoURLs.map(({ url, name }) =>
+      axios.get(url, AUTH).then(({ data }) => {
+        const info = data[0].weeks.map(week => {
+          return { w: week.w, c: week.c, a: week.a };
+        });
+        //console.log(name, info);
+        return { name, info };
+      })
+    )
+  );
+  return theStuff;
+}
+
+/*  catch (e) {
     console.log(e);
     const url = await `https://api.github.com/repos/${full_name}/stats/contributors`;
     const { data } = await axios.get(url, AUTH);
@@ -50,8 +63,8 @@ async function getCommitsByWeek(full_name, err) {
       const { w, c } = week;
       return { w, c };
     });
-    return formated;
-  }
-}
+    console.log({ name, formated });
+    return { name, formated };
+  } */
 
 export { getRepos, getCommitsByWeek };

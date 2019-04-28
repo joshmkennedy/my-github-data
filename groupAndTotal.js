@@ -20,7 +20,8 @@ function groupAndTotal(obj, toGroupBy, toTotal) {
   const totalByWeek = Object.keys(getGroup) //puts all keys of object into an array
     .map(key => {
       const item = getGroup[key]; //creates an array of each key's value
-      const week = format(new Date(item[0][toGroupBy] * 1000), "MM/DD/YYYY"); //formats date (more formatting is needed)
+      //const week = format(new Date(item[0][toGroupBy] * 1000), "MM/DD/YYYY"); //formats date (more formatting is needed)
+      const week = item[0][toGroupBy];
       const addition = item.map(item => item[toTotal]); //creates an array of just one peice of the object
       const total = addition.reduce((total, num) => total + num, 0); // totals the peices
       return { week, total };

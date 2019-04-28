@@ -1,49 +1,88 @@
-import express from 'express' 
+import express from "express";
+import bodyParser from "body-parser";
+import db from "./db";
+import cors from "cors";
+const jsonencoder = bodyParser.json();
+import _ from "lodash";
+import { getRepos, getCommitsByWeek } from "./githubData";
 
-import cors from 'cors' 
+import groupAndTotal from "./groupAndTotal";
+import fakedata from "./fakedata";
 
+const app = express();
+app.use(cors());
 
+app.get("/", async (req, res, next) => {
+  const USER = db.get("user").value();
 
+  const go = res.send({
+    allRepoCommits: await getAllRepoCommits(USER),
+    eachBiggestCommitWeek: await getEachBiggestCommitWeek(),
+    EachTotalCommits: await EachTotalCommits(),
+    EachAverageGap: "",
+    EachAverageCommitCount: await EachAverageCommitCount(),
+    user: USER,
+  });
+  return go;
+});
 
-import {getRepos, getCommitsByWeek} from './githubData'
-//import fakedata from './fakedata'
-import groupAndTotal from './groupAndTotal'
+async function getAllRepoCommits(user) {
+  //const data = await getCommitsByWeek(user);
+  const data = fakedata;
 
+  let all = []; //this needs refactorying uhh uhgly
+  await data.map(({ repoData }) => {
+    repoData.map(data => all.push(data));
+  });
+  const weeksTotaledData = await groupAndTotal(all, "w", "c");
 
+  return weeksTotaledData;
+}
+async function getEachBiggestCommitWeek() {
+  const data = fakedata; //eventually will be getCommitsByWeek
 
+  const eachRepo = await data.map(repo => {
+    const groupedByWeek = groupAndTotal(repo.repoData, "w", "c");
+    const biggestCommit = groupedByWeek.reduce(
+      (big, next) => (big.total >= next.total ? big : next),
+      groupedByWeek[0].total
+    );
+    return { repoName: repo.name, biggestCommit };
+  });
+  return eachRepo;
+}
 
- const app = express() 
-app.use(cors())
+async function EachTotalCommits() {
+  const data = fakedata; //eventually will be getCommitsByWeek
+  const eachRepo = await data.map(repo => {
+    const totalCommits = repo.repoData.reduce(
+      (total, data) => total + data.c,
+      0
+    );
+    return { repoName: repo.name, totalCommits };
+  });
+  return eachRepo;
+}
+async function EachAverageCommitCount() {
+  const data = fakedata; //eventually will be getCommitsByWeek
+  const eachRepo = await data.map(repo => {
+    const totalCommits = repo.repoData.reduce(
+      (total, data) => total + data.c,
+      0
+    );
+    const count = repo.repoData.length;
+    const averageCommit = Math.floor(totalCommits / count);
+    return { repoName: repo.name, averageCommit };
+  });
+  return eachRepo;
+}
+app.post("/user-info", jsonencoder, async (req, res, next) => {
+  const name = await req.body;
+  const update = await db.set("user", name.user).write();
 
-app.get('/', async(req, res, next)=>{
-    const data = await sendData()
-    /*  */
-    const go = await res.send(
-      data
-   )
-   return go
+  console.log(db.get("user").value());
+  await res.send(db.get("user").value());
+  return update;
+});
 
-})
-
-async function sendData(){
-    
-    const myRepos =  await getRepos('joshatoutthink')
-    const commitData = await  myRepos.map(async (repo)=>{
-        const name =  repo.full_name
-        const commits = await getCommitsByWeek(name)
-        return await commits
-    }) 
-    
-    const results = await Promise.all(commitData)
-    
-    let all = []//this needs refactorying uhh uhgly
-    await results.map((repo)=>{
-        repo.map(r=>all.push(r))
-    })
-    const weeksTotaledData = await groupAndTotal(all,'w','c') 
-    return weeksTotaledData
-
-} 
-app.listen(3000, console.log('http://localhost:3000'))
-
-
+app.listen(3000, console.log("http://localhost:3000"));

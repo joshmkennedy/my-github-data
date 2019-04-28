@@ -1,32 +1,4 @@
 {
-  "posts": {},
-  "count": 22,
-  "polls": [
-    {
-      "id": "1554414002.001500",
-      "channel": "D1C1M3Q21",
-      "question": "hello",
-      "yesCount": 1,
-      "noCount": 0,
-      "maybeCount": 0
-    },
-    {
-      "id": "1554414479.001700",
-      "channel": "D1C1M3Q21",
-      "question": "hello",
-      "yesCount": 2,
-      "noCount": 2,
-      "maybeCount": 1
-    },
-    {
-      "id": "1554414563.002200",
-      "channel": "D1C1M3Q21",
-      "question": "does charlie eat pancakes",
-      "yesCount": 2,
-      "noCount": 0,
-      "maybeCount": 1
-    }
-  ],
-  "user": "",
+  "user": "joshatoutthink",
   "repos": []
 }
